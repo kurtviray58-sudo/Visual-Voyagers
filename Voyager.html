@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Visual Voyagers: Hidden Figures Who Shaped Our Nation</title>
+  <style>
+    :root{
+      --bg:#F3ECE1;
+      --card:#FFF8F0;
+      --muted:#6B5B4B;
+      --accent:#A65D2A; /* terracotta */
+      --accent2:#7A4B2E; /* deep brown */
+      --text:#2E2A26;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+    /* header with textile pattern */
+    header{
+      color:#fff;
+      padding:36px 18px;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.06)),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0 6px, rgba(0,0,0,0.02) 6px 12px),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100" viewBox="0 0 200 100"><rect width="200" height="100" fill="%23A65D2A"/><g fill="%23D9B99B" opacity="0.12"><rect x="0" y="0" width="200" height="10"/><rect x="0" y="20" width="200" height="10"/><rect x="0" y="40" width="200" height="10"/><rect x="0" y="60" width="200" height="10"/><rect x="0" y="80" width="200" height="10"/></g><g fill="%237A4B2E" opacity="0.08"><rect x="0" y="10" width="200" height="5"/><rect x="0" y="30" width="200" height="5"/><rect x="0" y="50" width="200" height="5"/><rect x="0" y="70" width="200" height="5"/><rect x="0" y="90" width="200" height="5"/></g></svg>') center/cover;
+      background-color:var(--accent);
+    }
+    .container{max-width:1100px;margin:0 auto}
+    header .inner{max-width:1100px;margin:0 auto;padding:10px 18px}
+    h1{margin:0;font-size:1.9rem;letter-spacing:-0.6px;color:#fff}
+    p.lead{margin-top:10px;color:rgba(255,255,255,0.95);max-width:720px}
+
+    main{padding:22px}
+    .controls{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0;align-items:center;justify-content:space-between}
+    .search{flex:1;min-width:200px;max-width:680px}
+    input[type=text],select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(122,75,46,0.12);background:#fff;color:var(--text);font-size:0.96rem}
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-top:8px}
+    .card{background:var(--card);border-radius:12px;padding:12px;box-shadow:0 8px 20px rgba(46,42,38,0.06);display:flex;flex-direction:column;gap:10px;min-height:340px}
+    .thumb{height:160px;border-radius:8px;overflow:hidden;background:#efe6da;display:flex;align-items:center;justify-content:center}
+    .thumb img{width:100%;height:100%;object-fit:cover}
+    .meta{display:flex;justify-content:space-between;align-items:center}
+    .name{font-weight:700;color:var(--accent2)}
+    .role{color:var(--muted);font-size:0.9rem}
+    .excerpt{color:var(--text);font-size:0.95rem}
+    .actions{display:flex;gap:8px;align-items:center;margin-top:auto}
+    .btn{display:inline-block;padding:8px 12px;border-radius:8px;border:none;background:var(--accent);color:white;text-decoration:none;cursor:pointer}
+    .download-small{background:#efe8e0;color:var(--accent2);padding:7px 10px;border-radius:8px;text-decoration:none;border:1px solid rgba(122,75,46,0.06);cursor:pointer}
+
+    footer{margin-top:30px;padding:18px 0;color:var(--muted);text-align:center}
+
+    .modal{position:fixed;inset:0;background:rgba(6,8,10,0.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:60}
+    .modal.open{display:flex}
+    .modal-card{max-width:900px;width:100%;background:white;border-radius:12px;padding:18px;box-shadow:0 24px 60px rgba(2,6,23,0.4);overflow:auto;max-height:90vh}
+    .modal-card h2{margin-top:0;color:var(--accent2)}
+    .meta-line{color:var(--muted);margin-bottom:8px}
+    .bio-sources{font-size:0.9rem;color:var(--muted);margin-top:12px}
+    .profile-img{max-width:260px;border-radius:8px;box-shadow:0 8px 24px rgba(2,6,23,0.06)}
+
+    @media (max-width:520px){header{padding:22px}h1{font-size:1.4rem}.thumb{height:140px}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="inner container">
+      <h1>Visual Voyagers</h1>
+      <p class="lead">Hidden Figures Who Shaped Our Nation — celebrating lesser-known Filipinos whose work changed communities and history.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="intro">
+      <div class="controls">
+        <div class="search">
+          <input id="q" type="text" placeholder="Search by name, place or contribution..." oninput="applyFilters()">
+        </div>
+        <div style="width:220px">
+          <select id="era" onchange="applyFilters()">
+            <option value="all">All eras</option>
+            <option value="spanish">Spanish colonial</option>
+            <option value="revolutionary">Revolutionary / 1890s</option>
+            <option value="american">American era</option>
+            <option value="ww2">World War II</option>
+            <option value="modern">Modern / Postwar</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid" id="grid">
+
+      <!-- ORIGINAL 8 -->
+      <!-- Magnifico L. Osorio -->
+<article class="card" data-name="magnifico osorio" data-era="modern" data-tags="human-rights indigenous palawan negros">
+  <div class="thumb"><img src="https://pvao.gov.ph/wp-content/uploads/2020/12/Tiglao1.jpg" alt="Magnifico Osorio"></div>
+  <div>
+    <div class="meta"><div class="name">Magnifico L. Osorio</div><div class="role">Pastor & human-rights advocate — Negros / Palawan</div></div>
+    <div class="excerpt">A Methodist pastor who defended indigenous peoples and peasant communities; assassinated in 1985 for his activism and honored at Bantayog ng mga Bayani.</div>
+  </div>
+  <div class="actions">
+    <button class="btn" onclick="openModalId('magnifico')">Read more</button>
+    <a class="download-small" href="#" onclick="downloadProfileById(event,'magnifico')">Download</a>
+  </div>
+</article> 
+
+<!-- Melania Cristina Catalla -->
+<article class="card" data-name="cristina catalla" data-era="modern" data-tags="activist martial-law southern-tagalog">
+  <div class="thumb">
+    <img src="https://bantayogngmgabayani.org/wp-content/uploads/2023/05/catalla02.jpg" alt="Cristina Catalla">
+  </div>
+  <div>
+    <div class="meta">
+      <div class="name">Melania Cristina Catalla</div>
+      <div class="role">Community activist — Southern Tagalog</div>
+    </div>
+    <div class="excerpt">
+      Organizer in networks opposing the Marcos dictatorship; disappeared in 1977 and remembered at Bantayog ng mga Bayani for her community work.
+    </div>
+  </div>
+  <div class="actions">
+    <button class="btn" onclick="openModalId('catalla')">Read more</button>
+    <a class="download-small" href="#" onclick="downloadProfileById(event,'catalla')">Download</a>
+  </div>
+</article>
+ 
+
+<!-- Estelita Tiglao -->
+<article class="card" data-name="estelita tiglao" data-era="ww2" data-tags="ww2 resistance pampanga">
+  <div class="thumb"><img src="https://pvao.gov.ph/wp-content/uploads/2020/12/Tiglao1.jpg" alt="Estelita Tiglao"></div>
+  <div>
+    <div class="meta"><div class="name">Estelita Tiglao</div><div class="role">WWII resistance volunteer — Pampanga</div></div>
+    <div class="excerpt">A young volunteer who aided wounded soldiers, organised local resistance, and disguised herself to survive Japanese occupation in the Mount Arayat area.</div>
+  </div>
+  <div class="actions">
+    <button class="btn" onclick="openModalId('estelita')">Read more</button>
+    <a class="download-small" href="#" onclick="downloadProfileById(event,'estelita')">Download</a>
+  </div>
+</article>
+
+<!-- Felipa Culala (Dayang-Dayang) -->
+      <article class="card" data-name="felipa culala" data-era="ww2" data-tags="ww2 guerrilla pampanga candaba">
+        <div class="thumb"><img src="https://kahimyang.com/resources-15/felipa-culala-sm.webp" alt="Felipa Culala"></div>
+        <div>
+          <div class="meta"><div class="name">Felipa “Dayang-Dayang” Culala</div><div class="role">Guerrilla leader — Candaba, Pampanga</div></div>
+          <div class="excerpt">A female guerrilla commander who led raids and ambushes against Japanese forces and collaborators — notable for women's combat leadership in the region.</div>
+        </div>
+        <div class="actions">
+          <button class="btn" onclick="openModalId('felipa')">Read more</button>
+          <a class="download-small" href="#" onclick="downloadProfileById(event,'felipa')">Download</a>
+        </div>
+      </article>
+
+<!-- Datu Amai Pakpak -->
+      <article class="card" data-name="amai pakpak" data-era="spanish" data-tags="mindanao maranao resistance">
+        <div class="thumb"><img src="https://upload.wikimedia.org/wikipedia/commons/7/70/LM_DATU_AMAI_PAKPAK.jpg" alt="Datu Amai Pakpak"></div>
+        <div>
+          <div class="meta"><div class="name">Datu Amai Pakpak</div><div class="role">Maranao leader — Lanao (Mindanao)</div></div>
+          <div class="excerpt">19th-century Maranao chief who defended Kota Marahui from Spanish forces; remembered locally as a symbol of Mindanao resistance.</div>
+        </div>
+        <div class="actions">
+          <button class="btn" onclick="openModalId('amai')">Read more</button>
+          <a class="download-small" href="#" onclick="downloadProfileById(event,'amai')">Download</a>
+        </div>
+      </article>
+
+<!-- Vito Belarmino -->
+      <article class="card" data-name="vito belarmino" data-era="revolutionary" data-tags="revolution katipunan bicol">
+        <div class="thumb"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ed/Vito_Belarmino.webp" alt="Vito Belarmino"></div>
+        <div>
+          <div class="meta"><div class="name">Vito Belarmino</div><div class="role">Revolutionary general — Bicol</div></div>
+          <div class="excerpt">General who served during the Philippine Revolution and Philippine-American War; held regional command and helped organize forces in Albay.</div>
+        </div>
+        <div class="actions">
+          <button class="btn" onclick="openModalId('vito')">Read more</button>
+          <a class="download-small" href="#" onclick="downloadProfileById(event,'vito')">Download</a>
+        </div>
+      </article>
+
+<!-- Hadji Kamlon -->
+      <article class="card" data-name="hadji kamlon" data-era="modern" data-tags="sulu tausug resistance postwar">
+        <div class="thumb"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Kamlon_and_Marcos.jpg" alt="Hadji Kamlon"></div>
+        <div>
+          <div class="meta"><div class="name">Hadji Kamlon</div><div class="role">Tausūg leader — Sulu</div></div>
+          <div class="excerpt">WWII fighter who later led postwar uprisings in Sulu during the late 1940s–1950s; a folk hero in Tausūg memory for regional resistance.</div>
+        </div>
+        <div class="actions">
+          <button class="btn" onclick="openModalId('kamlon')">Read more</button>
+          <a class="download-small" href="#" onclick="downloadProfileById(event,'kamlon')">Download</a>
+        </div>
+      </article>
+
+<!-- Josefina Guerrero -->
+<article class="card" data-name="josefina guerrero" data-era="ww2" data-tags="spy resistance">
+  <div class="thumb"><img src="https://philippine-sailor.net/wp-content/uploads/2022/03/Zf621.jpg" alt="Josefina Guerrero"></div>
+  <div>
+    <div class="meta"><div class="name">Josefina Guerrero</div><div class="role">Spy and resistance courier — WWII</div></div>
+    <div class="excerpt">A Filipina spy who bravely carried maps and intelligence for the Allies during World War II while battling leprosy.</div>
+  </div>
+  <div class="actions">
+    <button class="btn" onclick="openModalId('josefina')">Read more</button>
+    <a class="download-small" href="#" onclick="downloadProfileById(event,'josefina')">Download</a>
+  </div>
+</article>
+
+<!-- Teresa Magbanua -->
+<article class="card" data-name="teresa magbanua" data-era="revolution" data-tags="visayas women hero">
+  <div class="thumb"><img src="https://tse3.mm.bing.net/th/id/OIP.TNkofGe0t-xCNkW8ZB3XJAHaKP?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Teresa Magbanua"></div>
+  <div>
+    <div class="meta"><div class="name">Teresa Magbanua</div><div class="role">Revolutionary leader — Visayas</div></div>
+    <div class="excerpt">Known as the “Joan of Arc of the Visayas,” she led troops in battle during the Philippine Revolution and the Philippine-American War.</div>
+  </div>
+  <div class="actions">
+    <button class="btn" onclick="openModalId('teresa')">Read more</button>
+    <a class="download-small" href="#" onclick="downloadProfileById(event,'teresa')">Download</a>
+  </div>
+</article>
+
+<!-- Remedios Gomez-Paraiso (Kumander Liwayway) -->
+<article class="card" data-name="remedios gomez-paraiso" data-era="ww2" data-tags="hukbalahap women resistance">
+  <div class="thumb"><img src="https://kahimyang.com/resources-20/kumander-liwayway.webp" alt="Remedios Gomez-Paraiso"></div>
+  <div>
+    <div class="meta"><div class="name">Remedios Gomez-Paraiso</div><div class="role">Hukbalahap Commander — Pampanga</div></div>
+    <div class="excerpt">Called “Kumander Liwayway,” she was a beauty queen turned guerrilla leader who fought Japanese forces with the Hukbalahap resistance.</div>
+  </div>
+  <div class="actions">
+    <button class="btn" onclick="openModalId('liwayway')">Read more</button>
+    <a class="download-small" href="#" onclick="downloadProfileById(event,'liwayway')">Download</a>
+  </div>
+</article>
+
+<!-- Magdalena Leones -->
+<article class="card" data-name="magdalena leones" data-era="ww2" data-tags="spy intelligence women">
+  <div class="thumb"><img src="https://tse3.mm.bing.net/th/id/OIP.WrChpL9KzqVrg8nQuzdwUQHaKA?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Magdalena Leones"></div>
+  <div>
+    <div class="meta"><div class="name">Magdalena Leones</div><div class="role">Spy and intelligence agent — WWII</div></div>
+    <div class="excerpt">A Filipina intelligence agent who carried vital military information through enemy lines, later awarded the Silver Star by the U.S. Army.</div>
+  </div>
+  <div class="actions">
+    <button class="btn" onclick="openModalId('magdalena')">Read more</button>
+    <a class="download-small" href="#" onclick="downloadProfileById(event,'magdalena')">Download</a>
+  </div>
+</article>
+
+<!-- Simeon Ola -->
+<article class="card" data-name="simeon ola" data-era="revolution" data-tags="bicol revolution hero">
+  <div class="thumb"><img src="https://upload.wikimedia.org/wikipedia/commons/8/80/Simeon_Ola.jpg" alt="Simeon Ola"></div>
+  <div>
+    <div class="meta"><div class="name">Simeon Ola</div><div class="role">Revolutionary leader — Bicol</div></div>
+    <div class="excerpt">A general during the Philippine Revolution, he led successful uprisings in Albay and was one of the last to surrender to American forces.</div>
+  </div>
+  <div class="actions">
+    <button class="btn" onclick="openModalId('simeon')">Read more</button>
+    <a class="download-small" href="#" onclick="downloadProfileById(event,'simeon')">Download</a>
+  </div>
+</article>
+
+<!-- Datu Bago -->
+<article class="card" data-name="datu bago" data-era="precolonial" data-tags="mindanao davao leader">
+  <div class="thumb"><img src="https://kahimyang.com/resources-20/datu-bago-of-davao.webp" alt="Datu Bago"></div>
+  <div>
+    <div class="meta"><div class="name">Datu Bago</div><div class="role">Local leader — Davao</div></div>
+    <div class="excerpt">A Muslim chieftain who resisted Spanish colonization and defended Davao from foreign intrusion in the 19th century.</div>
+  </div>
+  <div class="actions">
+    <button class="btn" onclick="openModalId('bago')">Read more</button>
+    <a class="download-small" href="#" onclick="downloadProfileById(event,'bago')">Download</a>
+  </div>
+</article>
+
+<!-- Agueda Kahabagan -->
+<article class="card" data-name="agueda kahabagan" data-era="revolution" data-tags="women leader general">
+  <div class="thumb"><img src="https://taasnoopilipino.com/wp-content/uploads/2024/07/taasnoopilipino-Agueda-Kahabagan-The-22Generala22-and-Revolutionary-Leader-677x1024.jpg" alt="Agueda Kahabagan"></div>
+  <div>
+    <div class="meta"><div class="name">Agueda Kahabagan</div><div class="role">Revolutionary general — Laguna</div></div>
+    <div class="excerpt">The only woman listed as a general in the Philippine Revolutionary Army, known for her courage in combat.</div>
+  </div>
+  <div class="actions">
+    <button class="btn" onclick="openModalId('agueda')">Read more</button>
+    <a class="download-small" href="#" onclick="downloadProfileById(event,'agueda')">Download</a>
+  </div>
+</article>
+
+<!-- Trinidad Tecson -->
+<article class="card" data-name="trinidad tecson" data-era="revolution" data-tags="women katipunan">
+  <div class="thumb"><img src="https://maharlika.tv/app/uploads/2023/11/TRINIDAD-TECSON_mnm-banner.jpg" alt="Trinidad Tecson"></div>
+  <div>
+    <div class="meta"><div class="name">Trinidad Tecson</div><div class="role">Katipunan member — Bulacan</div></div>
+    <div class="excerpt">Known as the “Mother of Biak-na-Bato,” she fought in battles and nursed the wounded during the revolution.</div>
+  </div>
+  <div class="actions">
+    <button class="btn" onclick="openModalId('trinidad')">Read more</button>
+    <a class="download-small" href="#" onclick="downloadProfileById(event,'trinidad')">Download</a>
+  </div>
+</article>
+
+<!-- Francisco Salazar -->
+<article class="card" data-name="francisco salazar" data-era="martial-law" data-tags="activist journalist">
+  <div class="thumb"><img src="https://i.ytimg.com/vi/7adXPjgVKsg/hq2.jpg?sqp=-oaymwEoCOADEOgC8quKqQMcGADwAQH4Ac4FgAKACooCDAgAEAEYZSBbKEswDw==&rs=AOn4CLDb8HMv4Z46Huwjf_QfoKubOEuy-w" alt="Francisco Salazar"></div>
+  <div>
+    <div class="meta"><div class="name">Francisco Salazar</div><div class="role">Martial Law activist — Manila</div></div>
+    <div class="excerpt">An outspoken student activist and journalist who documented human-rights abuses during the Marcos dictatorship.</div>
+  </div>
+  <div class="actions">
+    <button class="btn" onclick="openModalId('francisco')">Read more</button>
+    <a class="download-small" href="#" onclick="downloadProfileById(event,'francisco')">Download</a>
+  </div>
+</article>
+
+<!-- Rafael Roces Jr. -->
+<article class="card" data-name="rafael roces jr" data-era="ww2" data-tags="journalist hero resistance">
+  <div class="thumb"><img src="https://rocesfamily.com/sm2002/rocesphils/images/reyes11.jpg" alt="Rafael Roces Jr."></div>
+  <div>
+    <div class="meta"><div class="name">Rafael Roces Jr.</div><div class="role">Journalist & resistance member — Manila</div></div>
+    <div class="excerpt">A writer and journalist who joined the underground resistance against the Japanese; executed in Fort Santiago in 1944.</div>
+  </div>
+  <div class="actions">
+    <button class="btn" onclick="openModalId('rafael')">Read more</button>
+    <a class="download-small" href="#" onclick="downloadProfileById(event,'rafael')">Download</a>
+  </div>
+</article>
+
+<!-- Encarnacion Alzona -->
+<article class="card" data-name="encarnacion alzona" data-era="commonwealth" data-tags="education women suffrage">
+  <div class="thumb"><img src="https://www.flipscience.ph/wp-content/uploads/2019/04/29005017853_6c2038cd6f_o.png" alt="Encarnacion Alzona"></div>
+  <div>
+    <div class="meta"><div class="name">Encarnacion Alzona</div><div class="role">Historian & suffragist — Manila</div></div>
+    <div class="excerpt">The first Filipina to earn a PhD, she championed women’s rights and education, becoming a National Scientist of the Philippines.</div>
+  </div>
+  <div class="actions">
+    <button class="btn" onclick="openModalId('encarnacion')">Read more</button>
+    <a class="download-small" href="#" onclick="downloadProfileById(event,'encarnacion')">Download</a>
+  </div>
+</article>
+
+    </section>
+
+    <footer>
+      <small>Compiled from public sources (regional histories, Bantayog ng mga Bayani, wartime archives, and scholarly profiles). If you will publish beyond class use, please verify and add citations for each profile.</small>
+    </footer>
+  </main>
+
+  <!-- modal -->
+  <div id="modal" class="modal" onclick="closeModal(event)">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button onclick="closeModal(event)" style="float:right;border:none;background:transparent;font-size:20px;cursor:pointer">✕</button>
+      <h2 id="modalTitle">Title</h2>
+      <div class="meta-line" id="modalMeta">role • era</div>
+      <div id="modalBody" style="line-height:1.6;color:#243447"></div>
+      <div class="bio-sources" id="modalSources"></div>
+      <div style="margin-top:12px"><a id="modalDownload" class="btn" href="#" onclick="downloadModalBio(event)">Download biography</a></div>
+    </div>
+  </div>
+
+  <script>
+    // Profiles (all 18)
+    const PROFILES = {
+      /* ORIGINAL 8 */
+      magnifico: {
+        name: "Magnifico L. Osorio",
+        role: "Pastor & human-rights advocate — Negros / Palawan",
+        era: "Modern (assassinated 1985)",
+        bio: `<p>Magnifico "Lib" Osorio was a Methodist pastor and human-rights activist from Manapla, Negros Occidental. He advocated for indigenous peoples and peasant communities, exposing abuses and standing with marginalized groups. Osorio's work in Palawan and rural communities led to death threats and ultimately his assassination in 1985. He is honored at the <em>Bantayog ng mga Bayani</em> memorial.</p>`,
+        sources: ["Bantayog ng mga Bayani — memorial records"],
+        img: "https://upload.wikimedia.org/wikipedia/commons/6/6f/Bantayog_ng_mga_Bayani_Wall_of_Remembrance_2018.jpg"
+      },
+
+      catalla: {
+        name: "Melania Cristina Catalla",
+        role: "Community activist — Southern Tagalog",
+        era: "Modern (disappeared 1977)",
+        bio: `<p>Melania Cristina Catalla was an organizer in Southern Tagalog networks providing legal aid, community education, and grassroots support during the 1970s. She worked with student groups, church networks, and alternate institutions opposing authoritarian abuses. On July 31, 1977 she was forcibly disappeared; she is commemorated at Bantayog ng mga Bayani.</p>`,
+        sources: ["Bantayog ng mga Bayani — martyrs lists"],
+        img: "https://bantayogngmgabayani.org/wp-content/uploads/2023/05/catalla02.jpg"
+      },
+
+      estelita: {
+        name: "Estelita Tiglao",
+        role: "WWII resistance volunteer — Pampanga",
+        era: "World War II",
+        bio: `<p>Estelita Tiglao helped guerrilla forces around San Fernando, Pampanga during the Japanese occupation. She aided wounded soldiers, organised local civilian resistance networks, and used disguises to protect herself and others. Her story is preserved in regional accounts and oral histories.</p>`,
+        sources: ["Local/regional feature articles and oral histories"],
+        img: "https://upload.wikimedia.org/wikipedia/commons/a/a2/Filipino_Guerrillas_1945.jpg"
+      },
+
+      josefina: {
+        name: "Josefina Guerrero",
+        role: "Spy & courier — Lucban, Quezon",
+        era: "World War II",
+        bio: `<p>Josefina Guerrero (1917–1996) served as a courier and intelligence operative during World War II. Living with Hansen's disease (leprosy), she used the stigma to her advantage to move freely and carry maps, reports and messages for guerrilla and Allied forces — information that supported liberation efforts. After the war she later moved to the U.S.</p>`,
+        sources: ["Wartime archives and Life Magazine features"],
+        img: "https://upload.wikimedia.org/wikipedia/en/8/8e/Josefina_Guerrero_1948_Life_Magazine.jpg"
+      },
+
+      felipa: {
+        name: "Felipa “Dayang-Dayang” Culala",
+        role: "Guerrilla leader — Candaba, Pampanga",
+        era: "World War II",
+        bio: `<p>Felipa Culala, known as "Dayang-Dayang", led a small guerrilla group in Candaba and directed raids and ambushes against occupying forces and collaborators. Her leadership is notable as an example of women's active roles in local resistance operations during WWII.</p>`,
+        sources: ["Regional histories and wartime features"],
+        img: "https://kahimyang.com/resources-15/felipa-culala-sm.webp"
+      },
+
+      amai: {
+        name: "Datu Amai Pakpak",
+        role: "Maranao leader — Lanao (Mindanao)",
+        era: "Late 19th century",
+        bio: `<p>Datu Amai Pakpak was a Maranao chief who led the defence of Kota Marahui (Marawi area) against Spanish colonial incursions in the late 19th century. His leadership and resistance are remembered in local history and commemorations.</p>`,
+        sources: ["Mindanao regional accounts and local histories"],
+        img: "https://upload.wikimedia.org/wikipedia/commons/7/70/LM_DATU_AMAI_PAKPAK.jpg"
+      },
+
+      vito: {
+        name: "Vito Belarmino",
+        role: "Revolutionary general — Bicol",
+        era: "Revolutionary / Philippine-American War",
+        bio: `<p>Vito Belarmino (b.1857) was a regional revolutionary general active during the Philippine Revolution and the Philippine-American War. He commanded forces in the Bicol region and contributed to the anti-colonial struggle during the transition from Spanish to American rule.</p>`,
+        sources: ["Revolutionary-era histories"],
+        img: "https://upload.wikimedia.org/wikipedia/commons/e/ed/Vito_Belarmino.webp"
+      },
+
+      kamlon: {
+        name: "Hadji Kamlon",
+        role: "Tausūg leader — Sulu",
+        era: "Postwar / Modern (1940s–1950s)",
+        bio: `<p>Hadji Kamlon was a Tausūg datu who fought in WWII and later led uprisings in the late 1940s–1950s in Sulu due to regional grievances and autonomy issues. He is remembered as a local symbol of resistance and identity.</p>`,
+        sources: ["Regional histories and news archives"],
+        img: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Kamlon_and_Marcos.jpg"
+      },
+
+      /* NEW 10 */
+      teresa: {
+        name: "Teresa Magbanua",
+        role: "\"Visayan Joan of Arc\" — Iloilo / Visayas",
+        era: "Revolutionary / Philippine-American War",
+        bio: `<p>Teresa Magbanua (c.1868–1947) led Visayan forces during the Philippine Revolution and the Philippine-American War. She commanded troops in several battles in Panay and bravely took to the field, earning a reputation as a woman military leader who challenged gender norms of her era.</p>`,
+        sources: ["Regional revolutionary histories and feature articles"],
+        img: "https://upload.wikimedia.org/wikipedia/commons/0/05/Teresa_Magbanua_portrait.jpg"
+      },
+
+      remedios: {
+        name: "Remedios Gomez-Paraiso (Kumander Liwayway)",
+        role: "Hukbalahap commander — Pampanga",
+        era: "World War II",
+        bio: `<p>Remedios Gomez-Paraiso (Kumander Liwayway) became a notable female commander in Huk and other guerrilla structures in central Luzon. After personal losses under occupation, she took up arms and organized fighters, including women combatants.</p>`,
+        sources: ["Huk wartime histories and feature profiles"],
+        img: "https://upload.wikimedia.org/wikipedia/commons/8/88/Filipino_women_partisans.jpg"
+      },
+
+      magdalena: {
+        name: "Magdalena Leones",
+        role: "WWII intelligence agent — Kalinga",
+        era: "World War II",
+        bio: `<p>Magdalena Leones was a teacher turned special agent who aided Allied-Filipino intelligence efforts during WWII. She smuggled radio parts and messages and helped coordinate resistance activities, even after imprisonment by occupying forces.</p>`,
+        sources: ["WWII features and intelligence histories"],
+        img: "https://upload.wikimedia.org/wikipedia/commons/a/ab/WWII_female_agent.jpg"
+      },
+
+      simeon: {
+        name: "Simeon Ola",
+        role: "Katipunan leader — Albay, Bicol",
+        era: "Philippine-American War",
+        bio: `<p>Simeon Ola led regional anti-American resistance in Bicol and was among the last revolutionary generals to surrender in 1903. His leadership shows the continued local struggles after the formal end of Spanish rule.</p>`,
+        sources: ["Bicol regional histories and revolutionary records"],
+        img: "https://upload.wikimedia.org/wikipedia/commons/8/8b/Philippine_revolutionary_soldiers.jpg"
+      },
+
+      datubago: {
+        name: "Datu Bago",
+        role: "Indigenous chieftain — Davao (Mindanao)",
+        era: "Early-mid 19th century",
+        bio: `<p>Datu Bago united Bagobo and Kagan tribes to defend their lands in the face of Spanish incursions. His legacy is locally commemorated (e.g., the Datu Bago Awards in Davao) as a symbol of indigenous resistance and leadership.</p>`,
+        sources: ["Mindanao local histories and commemorations"],
+        img: "https://upload.wikimedia.org/wikipedia/commons/0/0b/Davao_old_photo.jpg"
+      },
+
+      agueda: {
+        name: "Agueda Kahabagan",
+        role: "Female general — Santa Cruz, Laguna",
+        era: "Revolutionary era",
+        bio: `<p>Agueda Kahabagan was recognized in Katipunan records as a woman who took up arms and led troops in Laguna. Few women were officially titled 'general', and her story highlights women's active participation in the revolution.</p>`,
+        sources: ["Katipunan-era records and regional studies"],
+        img: "https://upload.wikimedia.org/wikipedia/commons/2/2e/Filipina_revolutionary_woman.jpg"
+      },
+
+      trinidad: {
+        name: "Trinidad Tecson",
+        role: "\"Ina ng Biak-na-Bato\" — Bulacan",
+        era: "Revolutionary era",
+        bio: `<p>Trinidad Tecson (c.1848–1928) was a nurse, fighter and organizer who supported revolutionaries in Bulacan; she led women who nursed wounded combatants and served as commissary in revolutionary government structures.</p>`,
+        sources: ["Revolutionary-era records and regional biographies"],
+        img: "https://upload.wikimedia.org/wikipedia/commons/2/20/Trinidad_Tecson_portrait.jpg"
+      },
+
+      francisco: {
+        name: "Francisco Salazar",
+        role: "Guerrilla leader — Bohol / Surigao",
+        era: "World War II",
+        bio: `<p>Francisco Salazar led guerrilla operations and worked with USAFFE networks in central Philippines. He is remembered locally for his leadership and sacrifice resisting Japanese occupation.</p>`,
+        sources: ["WWII regional histories and memorials"],
+        img: "https://upload.wikimedia.org/wikipedia/commons/4/45/WWII_Bohol_guerrillas.jpg"
+      },
+
+      rafael: {
+        name: "Rafael Roces Jr.",
+        role: "Journalist & martyr — Manila",
+        era: "World War II",
+        bio: `<p>Rafael Roces Jr. was a journalist who used his writings and contacts to support resistance efforts against the Japanese occupation. Arrested and imprisoned in Fort Santiago, he was executed in 1944 — remembered among wartime martyrs.</p>`,
+        sources: ["Wartime records and journalist memorials"],
+        img: "https://upload.wikimedia.org/wikipedia/commons/3/34/Rafael_Roces_Jr_portrait.jpg"
+      },
+
+      encarnacion: {
+        name: "Encarnacion Alzona",
+        role: "Historian & suffragist — Manila",
+        era: "Modern / 20th century",
+        bio: `<p>Encarnacion Alzona (1895–2001) was the first Filipino woman to earn a doctorate (Columbia University) and a leading historian and suffragist. She taught at the University of the Philippines and wrote extensively on Philippine history and women's rights.</p>`,
+        sources: ["Academic profiles and suffrage histories"],
+        img: "https://upload.wikimedia.org/wikipedia/commons/5/5b/Encarnacion_Alzona_portrait.jpg"
+      }
+    };
+
+    // open modal by id
+    function openModalId(id){
+      const p = PROFILES[id];
+      if(!p) return;
+      document.getElementById('modalTitle').innerText = p.name;
+      document.getElementById('modalMeta').innerText = `${p.role} • ${p.era || ''}`;
+      document.getElementById('modalBody').innerHTML = p.bio + `<p style="margin-top:12px"><img src="${p.img}" alt="${p.name}" class="profile-img"></p>`;
+      document.getElementById('modalSources').innerHTML = '<strong>Sources:</strong> ' + (p.sources || []).join(' • ');
+      document.getElementById('modalDownload').dataset.profileId = id;
+      document.getElementById('modal').classList.add('open');
+      // focus for accessibility
+      document.getElementById('modalTitle').focus();
+    }
+
+    function closeModal(e){
+      if(e.target.id === 'modal' || e.type === 'click'){
+        document.getElementById('modal').classList.remove('open');
+      }
+    }
+
+    function applyFilters(){
+      const q=document.getElementById('q').value.trim().toLowerCase();
+      const era=document.getElementById('era').value;
+      const cards=[...document.querySelectorAll('.card')];
+      cards.forEach(card=>{
+        const name=card.dataset.name||'';
+        const tags=(card.dataset.tags||'')+ ' ' + name;
+        const cardEra=card.dataset.era||'all';
+        const excerpt = (card.querySelector('.excerpt') && card.querySelector('.excerpt').innerText.toLowerCase()) || '';
+        const matchesQ = q === '' || tags.includes(q) || excerpt.includes(q);
+        const matchesEra = era === 'all' || cardEra === era;
+        card.style.display = (matchesQ && matchesEra) ? 'flex' : 'none';
+      });
+    }
+
+    function downloadProfileById(e, id){
+      e.preventDefault();
+      const p = PROFILES[id];
+      if(!p) return;
+      const txt = `${p.name}\n${p.role}\n${p.era}\n\n${stripHtml(p.bio)}\n\nSources: ${p.sources.join(' • ')}`;
+      triggerDownload(p.name.replace(/\s+/g,'_') + '.txt', txt);
+    }
+
+    function downloadModalBio(e){
+      e.preventDefault();
+      const id = e.currentTarget.dataset.profileId;
+      if(!id) return;
+      downloadProfileById(e, id);
+    }
+
+    function triggerDownload(filename, text){
+      const blob = new Blob([text], {type: 'text/plain'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = filename;
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function stripHtml(html){
+      const tmp = document.createElement('div');
+      tmp.innerHTML = html;
+      return tmp.textContent || tmp.innerText || '';
+    }
+
+    // keyboard: close modal on Esc
+    document.addEventListener('keydown', e => { if(e.key === 'Escape'){ document.getElementById('modal').classList.remove('open'); } });
+  </script>
+</body>
+</html>
+ 
